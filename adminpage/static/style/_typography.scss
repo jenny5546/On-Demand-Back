@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Font setting
+   ========================================================================== */
+
+// Font style
+@import '../00-config/_config__typography.scss';
+
+body {
+    //text-transform: uppercase;
+    font-family: $_base-font-family;
+}
+
+h1 {
+  font-family: $_base-font-family;
+  font-size: 96px;
+  font-weight: $bold;
+  line-height: 142px;
+  letter-spacing: -1.5px;
+}
+
+h2 {
+  font-family: $_base-font-family;
+  font-size: 60px;
+  font-weight: $bold;
+  line-height: 88px;
+  letter-spacing: -0.5px;
+}
+
+h3 {
+  font-family: $_base-font-family;
+  font-size: 48px;
+  font-weight: $bold;
+  line-height: 72px;
+  letter-spacing: normal;
+}
+
+h4 {
+  font-family: $_base-font-family;
+  font-size: 34px;
+  font-weight: $bold;
+  line-height: 50px;
+  letter-spacing: 0.3px;
+}
+
+h5 {
+  font-family: $_base-font-family;
+  font-size: 24px;
+  font-weight: $regular;
+  line-height: 36px;
+  letter-spacing: normal;
+}
+
+h6 {
+  font-family: $_base-font-family;
+  font-size: 20px;
+  font-weight: $medium;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+}
+
+@mixin subtitle_01() {
+  font-family: $_base-font-family;
+  font-size: 16px;
+  font-weight: $regular;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
+@mixin subtitle_02() {
+
+  font-family: $_base-font-family;
+  font-size: 14px;
+  font-weight: $regular;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+}
+
+@mixin body_01() {
+  font-family: $_base-font-family;
+  font-size: 16px;
+  font-weight: $regular;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+
+@mixin body_02() {
+  font-family: $_base-font-family;
+  font-size: 14px;
+  font-weight: $regular;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+}
+
+@mixin caption() {
+  font-family: $_base-font-family;
+  font-size: 12px;
+  font-weight: $regular;
+  line-height: 18px;
+  letter-spacing: 0.4px;
+}
+
+@mixin button() {
+  font-family: $_base-font-family;
+  font-size: 14px;
+  font-weight: $medium;
+  line-height: 20px;
+  letter-spacing: 0.8px;
+}
+
+@mixin outline() {
+  font-family: $_base-font-family;
+  font-size: 10px;
+  font-weight: $regular;
+  line-height: 16px;
+  letter-spacing: 0.3px;
+}
+
+b{
+  font-weight: $bold;
+}

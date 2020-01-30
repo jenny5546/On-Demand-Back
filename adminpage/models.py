@@ -11,10 +11,24 @@ class UploadedTheme(models.Model):
 
 class Plan(models.Model):
     photo = models.FileField(upload_to='floor_plan', blank=True, null=True)
+    
+    def __int__(self):
+        return self.id
 
 class Request(models.Model):
     
     requested_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(blank=True, null=True)
+
+    def two_day_hence():
+        return timezone.now() + timezone.timedelta(days=2)
+
+    def update_date(self):
+        self.updated_at = timezone.now()
+        self.save()
+
+    due_at = models.DateTimeField(default = two_day_hence)
+
     progress = models.IntegerField(default=1)
     floor_type = models.CharField(
         max_length = 20,

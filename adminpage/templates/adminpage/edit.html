@@ -1,0 +1,21 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<script>
+    
+</script>
+
+<h1>Edit Request # {{arequest.id}}</h1>
+    <form action="/adminpage/{{ arequest.id }}/" method="POST">
+      {% csrf_token %}
+      <label>Progress</label>
+      <input name="progress" value="{{arequest.progress}}"/> <br />
+      <label>Due Date</label>
+      <input name="due_at" type= "date" value="{{arequest.due_at}}"/> <br />
+      <label>Additional Requests</label>
+      <input name="add_request" type= "text" value="{{arequest.add_request}}"/> <br />
+      <input type="submit" value="submit" />
+    </form>
+
+{% endblock %}

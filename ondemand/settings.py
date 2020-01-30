@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # 'rest_framework',
     'adminpage.apps.AdminpageConfig',
     'corsheaders',
+    'sass_processor',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,13 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
+
+SASS_PROCESSOR_ENABLED = True
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
+print(BASE_DIR)

@@ -1,0 +1,170 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<div class="sidenav">
+    <a href="" class="dashboard_here"> Dash Board </a>
+    <a href="show/" class="request"> Request </a>
+    <a href="#" class="messages"> Messages </a>
+</div>
+<div class="main">
+    <div class="board">
+    <canvas id="doughnut-chart" style="width: auto; height: auto;"></canvas>
+    <canvas id="line-chart" style="width: 150%; height: auto;            overflow: hidden;
+"></canvas>
+    
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+    var config = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            '#CC3D6C', '#FF776F', '#66FFCB', '#3DAECC', '#7A9299'
+          ],
+          label: 'Population'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: false
+      }
+    };
+
+    var linedata = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: "My First dataset",
+                backgroundColor: 'rgb(255, 99, 132)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 99, 132)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [0, 10, 5, 2, 20, 30, 45, 50, 45, 40, 30, 20],
+            }]
+        },
+        // Configuration options go here
+        options: {
+            responsive: false
+        }
+    }
+
+    window.onload = function() {
+      var ctx = document.getElementById('doughnut-chart').getContext('2d');
+      var ctx2 = document.getElementById('line-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+      window.myLine = new Chart(ctx2, linedata);
+    };
+
+  </script>
+    </div>
+    <h1>
+        Request On-Run
+    </h1>
+    <table class="data">
+        <thead>
+            <tr class="head">
+      
+                <th class='id'>
+                    <button class="sorting">ID#</button>
+                </th>
+                <th>
+                    <button class="sorting">Application Date</button>
+                </th>
+                <th>
+                    <button class="sorting">Type, Size</button>
+                </td>
+                <th>
+                    <button class="sorting">Due Date</button>
+                </th>
+                <th>
+                    <button class="sorting">Time Remaining</button>
+                </th>
+                <th>
+                    <button class="sorting">Work Status</button>
+                </th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests.all %}
+              <tr>
+                  <td>{{request.id}}</td>
+                  <td>{{request.requested_at|date:'Y/m/d'}} {{request.requested_at|time:'H:i:s'}}</td>
+                  <td>({{request.floor_type}}, {{request.floor_size}} {{request.floor_size_unit}} <sup>2</sup>)</td>
+                  <td>{{request.due_at|date:'Y/m/d'}}</td>
+                  <td>{{request.due_at|timeuntil}}</td>
+                  <td>{{request.progress}}</td>
+                  <td><a href="/{{request.id}}"><i class="fas fa-chevron-circle-right" style= "color: black"></i></a></td>
+              </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    // 테이블 재 세팅
+    var table_html;
+    var k = 0;
+    function re_table(line, cols, table_position) {
+        table_html = "";
+        for(var i = 0; i<line; i++) {
+            table_html += "<tr>";
+            for(var j = 0; j<cols; j++) {
+                table_html += "<td>"+new_array[i][j]+"</td>";
+            }
+            table_html += "</tr>";
+        }
+        $(table_position.find("tbody")).html(table_html);
+    }
+
+    // 정렬
+    $(document).ready(function() {
+        var text_array;
+        
+        $("button.sorting").on("click", function() {
+            var $this = $(this);
+            var $this_table = $this.parents("table");
+            var $this_start_number = $this.parent().index();
+            
+            var table_th_length = $this.parents("table").find("thead th").length; //테이블 칸의 갯수
+            var table_tr_length = $this.parents("table").find("tbody tr").length; //테이블 내용 줄 갯수
+
+            new_array = new Array();
+            for(var i = 0; i<table_tr_length; i++) {
+                new_array[i] = [];
+                for(var j = 0 ; j < table_th_length; j++) {
+                    text_array = $this_table.find("tbody tr").eq(i).find("td").eq(j).text(); // 값땡겨오는거
+                    new_array[i][j] = text_array;
+                }   
+            }
+            
+            //테이블 클래스 active 지정
+            $this_table.find("th button")
+            /* 정렬 */
+            new_array.sort(function (a, b) { 
+
+                if(k % 2 == 0) {
+                    console.log(k)
+                    return a[$this_start_number] < b[$this_start_number] ? -1 : a[$this_start_number] > b[$this_start_number]? 1 : 0;  
+                } else {
+                  console.log("hahd")
+                    return a[$this_start_number] > b[$this_start_number] ? -1 : a[$this_start_number] < b[$this_start_number]? 1 : 0;  
+                }
+                
+            });
+                k+=1;
+            //값이 들어오는지 확인 소스
+            //console.log(new_array);
+
+            $this_table.find("tbody").empty();
+            re_table(table_tr_length, table_th_length, $this_table);
+        });
+    })
+</script>   
+
+{% endblock content %}

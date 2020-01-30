@@ -1,0 +1,241 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<div class="sidenav">
+        <a href="/" class="dashboard" onclick="color()"> Dash Board </a>
+        <a href="/show" class="request_here"> Request </a>
+        <a href="#" class="messages"> Messages </a>
+
+</div>
+
+<div class="requests">
+    <div class= "requests-title">
+        <h1>Request Page</h1> 
+    </div>
+
+    <div class="requests-on-run">
+        <div class="requests-table-top">
+            <h3>On-Run Requests</h3>
+            <input class="searchbox"/>
+        </div>
+        
+        <table>
+            <thead>
+                <tr class="head">
+                        <th>
+                            <button class="sorting">ID#</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Application Date</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Type, Size</button>
+                        </td>
+                        <th>
+                            <button class="sorting">Due Date</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Time Remaining</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Work Status</button>
+                        </th>
+                        <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in onrunRequests %}
+                <tr>
+                    <td>{{request.id}}</td>
+                    <td>{{request.requested_at|date:'Y/m/d'}} {{request.requested_at|time:'H:i:s'}}</td>
+                    <td>({{request.floor_type}}, {{request.floor_size}} {{request.floor_size_unit}} <sup>2</sup>)</td>
+                    <td>{{request.due_at|date:'Y/m/d'}}</td>
+                    <td>{{request.due_at|timeuntil}}</td>
+                    <td>{{request.progress}}</td>
+                    <td><a href="/{{request.id}}"><i class="fas fa-chevron-circle-right" style= "color: black"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="requests-total">
+        <div class="requests-table-top">
+            <h3>Total Requests</h3>
+            <input class="searchbox"/>
+        </div>
+            <table>
+                <thead>
+                    <tr class="head">
+                        <th>
+                            <button class="sorting">ID#</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Application Date</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Type, Size</button>
+                        </td>
+                        <th>
+                            <button class="sorting">Due Date</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Time Remaining</button>
+                        </th>
+                        <th>
+                            <button class="sorting">Work Status</button>
+                        </th>
+                        <th>Edit</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in totalRequests %}
+                    <tr>
+                        <td>{{request.id}}</td>
+                        <td>{{request.requested_at|date:'Y/m/d'}} {{request.requested_at|time:'H:i:s'}}</td>
+                        <td>({{request.floor_type}}, {{request.floor_size}} {{request.floor_size_unit}} <sup>2</sup>)</td>
+                        <td>{{request.due_at|date:'Y/m/d'}}</td>
+                        <td>{{request.due_at|timeuntil}}</td>
+                        <td>{{request.progress}}</td>
+                        <td><a href="/{{request.id}}"><i class="fas fa-chevron-circle-right" style= "color: black"></i></a></td>
+                    </tr>
+        
+                    {% endfor %}
+        
+                </tbody>
+            </table>
+    </div>
+</div>
+
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    // 테이블 재 세팅
+    var table_html;
+    var k = 0;
+    var search_try_num = 0;
+    new_array = new Array();
+    function re_table(line, cols, table_position) {
+        table_html = "";
+        for(var i = 0; i<line; i++) {
+            table_html += "<tr>";
+            for(var j = 0; j<cols; j++) {
+                table_html += "<td>"+new_array[i][j]+"</td>";
+            }
+            table_html += "</tr>";
+        }
+        $(table_position.find("tbody")).html(table_html);
+    }
+    function searching(line, cols, table_position) {
+        table_html = "";
+        for(var i = 0; i<line; i++) {
+            table_html += "<tr>";
+            console.log("this is retable2", search_array)
+            if(search_array.length === 0){
+                for(var j = 0; j<cols; j++) {
+                    table_html += "<td>"+new_array[i][j]+"</td>";
+                }            
+            }
+            else{
+                for(var j = 0; j<cols; j++) {
+                    table_html += "<td>"+search_array[i][j]+"</td>";
+                }
+            }
+            table_html += "</tr>";
+        }
+        $(table_position.find("tbody")).html(table_html);
+    }
+
+    // 정렬
+    $(document).ready(function() {
+        var text_array;
+        
+        $("button.sorting").on("click", function() {
+            var $this = $(this);
+            var $this_table = $this.parents("table");
+            var $this_start_number = $this.parent().index();
+            
+            var table_th_length = $this.parents("table").find("thead th").length; //테이블 칸의 갯수
+            var table_tr_length = $this.parents("table").find("tbody tr").length; //테이블 내용 줄 갯수
+
+            new_array = new Array();
+            for(var i = 0; i<table_tr_length; i++) {
+                new_array[i] = [];
+                for(var j = 0 ; j < table_th_length; j++) {
+                    text_array = $this_table.find("tbody tr").eq(i).find("td").eq(j).html(); // 값땡겨오는거
+                    new_array[i][j] = text_array;
+                }   
+            }
+            
+            //테이블 클래스 active 지정
+            //$this_table.find("th button")
+            /* 정렬 */
+            new_array.sort(function (a, b) { 
+
+                if(k % 2 == 0) {
+                    console.log(k)
+                    return a[$this_start_number] < b[$this_start_number] ? -1 : a[$this_start_number] > b[$this_start_number]? 1 : 0;  
+                } else {
+                  console.log("hahd")
+                    return a[$this_start_number] > b[$this_start_number] ? -1 : a[$this_start_number] < b[$this_start_number]? 1 : 0;  
+                }
+                
+            });
+                k+=1;
+            //값이 들어오는지 확인 소스
+            //console.log(new_array);
+
+            $this_table.find("tbody").empty();
+            re_table(table_tr_length, table_th_length, $this_table);
+        });
+        var table_th_length2 = 0
+        var table_tr_length2 = 0
+        $("input.searchbox").on("input", function() {
+            var $this = $(this);
+            var $this_table = $this.parents("div.requests-table-top").next();
+            var $this_start_number = $this.parents("div.requests-table-top").next().index();
+            var input_text = $this.val();
+            var search_elem_num = 0;
+            if(search_try_num == 0){
+                table_th_length2 = $this.parents("div.requests-table-top").next().find("thead th").length; //테이블 칸의 갯수
+                table_tr_length2 = $this.parents("div.requests-table-top").next().find("tbody tr").length; //테이블 내용 줄 갯수
+            //console.log(table_th_length)
+            }
+
+            //값 가져와서 새로운 array에 할당하기
+            
+            search_array = []
+            if(search_try_num == 0){
+                //new_array = new Array();
+                for(var i = 0; i<table_tr_length2; i++) {
+                    new_array[i] = [];
+                    for(var j = 0 ; j < table_th_length2; j++) {
+                        text_array = $this_table.find("tbody tr").eq(i).find("td").eq(j).html(); // 값땡겨오는거
+                        new_array[i][j] = text_array;
+                    }   
+                }
+                console.log("hihi")
+            }
+
+            for(var i =0; i<table_tr_length2; i++){
+                if(new_array[i][0] === input_text){
+                    search_array.push(new_array[i])
+                    search_elem_num++;
+                }
+            }
+            if(search_elem_num == 0){
+                search_elem_num = table_tr_length2;
+            }
+            //값 들어오는지 확인
+            console.log(input_text);
+            console.log(search_array);
+            console.log(table_tr_length2)
+            search_try_num++;
+            searching(search_elem_num, table_th_length2, $this_table);
+        })
+
+    })
+</script>   
+
+{% endblock content %}

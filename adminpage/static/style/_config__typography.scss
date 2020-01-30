@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Font Resource
+   ========================================================================== */
+
+/* Google font*/
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700&display=swap&subset=korean');
+
+// Font weights
+
+$thin: 100;
+$light: 300;
+$regular: 400;
+$medium: 500;
+$bold: 700;
+$black: 900;
+
+// _base Font
+$_base-font-family: 'Noto Sans KR', sans-serif;
+
+@font-face {
+    font-family:'Noto Sans KR';
+    src: url('./font/NotoSansKR-Black.woff2') format('woff2'),
+         url('./font/NotoSansKR-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family:'Noto Sans KR';
+    src: url('./font/NotoSansKR-Bold.woff2') format('woff2'),
+         url('./font/NotoSansKR-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family:'Noto Sans KR';
+    src: url('./font/NotoSansKR-Medium.woff2') format('woff2'),
+         url('./font/NotoSansKR-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family:'Noto Sans KR';
+    src: url('./font/NotoSansKR-Regular.woff2') format('woff2'),
+         url('./font/NotoSansKR-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+  font-family:'Noto Sans KR';
+  src: url('./font/NotoSansKR-Light.woff2') format('woff2'),
+       url('./font/NotoSansKR-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+    font-family:'Noto Sans KR';
+    src: url('./font/NotoSansKR-Thin.woff2') format('woff2'),
+         url('./font/NotoSansKR-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}

@@ -1,0 +1,121 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<div class="sidenav">
+    <a href="/" class="dashboard" onclick="color()"> Dash Board </a>
+    <a href="/show" class="request_here"> Request </a>
+    <a href="#" class="messages"> Messages </a>
+</div>
+
+<div class="eachRequest">
+
+    <div>
+        <a class="eachRequest--editbtn" href='/adminpage/{{arequest.id}}/edit'>
+          Edit Request
+        </a>
+    </div>
+    
+    <div class="eachRequest--header">
+        <h2>Request # {{arequest.id}}</h2>
+    </div>
+
+    <div class="eachRequest--status">
+            <h1>Status: {{arequest.progress}}</h1>
+    </div>
+
+    <div class="eachRequest--plan">
+        <label>Uploaded Plan Image</label>
+        <div class="eachRequest--plan_wrapper" >
+            {% for plan in arequest.floor_plan.all %}
+                <div class="eachRequest--plan_wrapper-small"> 
+                    <img class="eachRequest--plan_img" src="{{ plan.photo.url }}">
+                    <a class="eachRequest--plan_btn" style = "text-decoration: none;" href= "/{{arequest.id}}/{{plan.id}}/download" >
+                        Download Plan <i class="fas fa-paperclip"></i>
+                    </a>
+                </div>
+                
+            {% endfor %}
+        </div>
+        
+    </div>
+
+    <div class="eachRequest--info">
+
+        <div class="eachRequest--info_type">
+            <label>Floor Type :</label>
+            
+            {% if arequest.floor_type == "Residential" %}
+                {{arequest.floor_type}}
+            {% else %}
+                {{arequest.floor_type}} ( {{arequest.commercial_type}} )
+            {% endif %}
+            
+        </div>
+
+        <div class="eachRequest--info_size">
+            <label>Floor Size:</label>
+            {{arequest.floor_size}} {{arequest.floor_size_unit}} <sup>2</sup>
+        </div>
+
+        <div class="eachRequest--info_num">
+            <label>Floor Number:</label>
+            {{arequest.floor_number}} 
+        </div>
+
+        <!-- Optional Tags -->
+
+        {% if arequest.floor_address != "" %}
+            <div class="eachRequest--info_num">
+                <label>Floor Address:</label>
+                {{arequest.floor_address}} 
+            </div>
+        {% endif %}
+
+        <!-- Optional Tags -->
+
+        {% if arequest.floor_height != "" %}
+            <div class="eachRequest--info_num">
+                <label>Floor Height:</label>
+                {{arequest.floor_height}} {{arequest.floor_height_unit}} 
+            </div>
+        {% endif %}
+
+        {% if arequest.add_request != "" %}
+            <div class="eachRequest--info_num">
+                <label>Additional Requests:</label>
+                {{arequest.add_request}}
+            </div>
+        {% endif %}
+        
+    </div>
+
+
+    <!-- selected theme -->
+    {% if arequest.selected_theme.all  %}
+    <div class="eachRequest--stheme">
+            <label>Selected Theme Preferences</label>
+            <div class="eachRequest--stheme_wrapper" >
+                {% for theme in arequest.selected_theme.all %}
+                    <img class="eachRequest--stheme_img" src="{{ theme.option }}">
+                {% endfor %}
+            </div>
+    </div>
+    {% endif %}
+
+    <!-- uploaded theme -->
+    {% if arequest.uploaded_theme.all  %}
+    <div class="eachRequest--utheme">
+        <label>Uploaded Theme Preferences</label>
+        <div class="eachRequest--utheme_wrapper" >
+            {% for theme in arequest.uploaded_theme.all %}
+                <div class="eachRequest--utheme_wrapper-small"> 
+                    <img class="eachRequest--utheme_img"src="{{ theme.photo.url }}">
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}

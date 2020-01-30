@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+{% load static %}
+{% load sass_tags %}
+<html>
+    <head>
+        <title>ondemand service</title>
+        <link href="{% sass_src '../static/style/ondemand.scss' %}" rel="stylesheet" type="text/css" />
+        <!-- Icon Link -->
+        <script src="https://kit.fontawesome.com/55af2b838e.js"></script>
+
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+        </script>
+
+    </head>
+    <body>
+        <div class="header">
+            <header>
+                <div class="logo" style="display: flex; flex-direction: column; width: 300px;">
+                    <img src="{% static 'Archisketch_Logo.png' %}"/> 
+                    <h2> On-Demand 관리자 페이지</h2>
+                </div>
+                
+                <nav>
+                <ul>
+					<li><a href=""><i class="fas fa-bell fa-sm" style= "color: #ffffff; font-size: 30px;"></i></a></li>
+					<li><a href=""><i class="fas fa-envelope" style= "color: #ffffff; font-size: 30px;"></i></a></li>
+				</ul>
+                </nav>
+            </header>
+        </div>
+        <div class="mid">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </body>
+</html>
